@@ -10,9 +10,11 @@
     "egg-mongoose": "^2.2.1",
     "egg-passport": "^2.0.1",
     "egg-scripts": "^2.5.0",
+    "egg-sequelize": "^3.1.4",
     "egg-validate": "^1.0.0",
     "egg-view-nunjucks": "^2.2.0",
     "iview": "^2.13.1",
+    "mysql2": "^1.5.3",
     "nuxt": "^1.4.0"
   },
   "devDependencies": {
@@ -41,7 +43,10 @@
     "lint": "eslint .",
     "ci": "npm run lint && npm run cov",
     "autod": "autod",
-    "nuxt": "nuxt start"
+    "nuxt": "nuxt start",
+    "migrate:new": "egg-sequelize migration:create",
+    "migrate:up": "egg-sequelize db:migrate",
+    "migrate:down": "egg-sequelize db:migrate:undo"
   },
   "ci": {
     "version": "8"

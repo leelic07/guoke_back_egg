@@ -11,12 +11,21 @@ module.exports = appInfo => {
   config.middleware = [ 'verify' ];
 
   // mongodb
-  config.mongoose = {
-    client: {
-      url: 'mongodb://127.0.0.1/guoke',
-      options: {},
-    },
-    app: true,
+  // config.mongoose = {
+  //   client: {
+  //     url: 'mongodb://127.0.0.1/guoke',
+  //     options: {},
+  //   },
+  //   app: true,
+  // };
+
+  config.sequelize = {
+    dialect: 'mysql', // support: mysql, mariadb, postgres, mssql
+    database: 'guoke',
+    host: 'localhost',
+    port: '3306',
+    username: 'root',
+    password: '',
   };
 
   // session

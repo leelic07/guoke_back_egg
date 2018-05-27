@@ -2,9 +2,14 @@
 
 // had enabled by egg
 exports.static = true;
-exports.mongoose = {
+// exports.mongoose = {
+//   enable: true,
+//   package: 'egg-mongoose',
+// };
+
+exports.sequelize = {
   enable: true,
-  package: 'egg-mongoose',
+  package: 'egg-sequelize',
 };
 
 exports.validate = {
@@ -21,11 +26,6 @@ exports.cors = {
   enable: true,
   package: 'egg-cors',
 };
-
-// exports.view = {
-//   enable: true,
-//   package: 'egg-view',
-// };
 
 exports.nunjucks = {
   enable: true,
