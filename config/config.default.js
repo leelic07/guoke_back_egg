@@ -25,7 +25,7 @@ module.exports = appInfo => {
     host: 'localhost',
     port: '3306',
     username: 'root',
-    password: 'root',
+    password: '12345',
   };
 
   // session
@@ -74,6 +74,13 @@ module.exports = appInfo => {
       hostname: '127.0.0.1',
       // path: '/var/run/egg.sock',
     },
+  };
+
+  config.swagger = {
+    enable: true,
+    mountPath: '/test-mount', // swagger-ui  address  <domain>/test-mount
+    swaggerFilePath: '/test-swagger.json', // swagger file default path
+    enableGoogleFont: false,
   };
 
   return config;

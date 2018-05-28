@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = app => {
-  const { STRING, INTEGER, DATE, NOW } = app.Sequelize;
+  const { STRING, INTEGER } = app.Sequelize;
   const Users = app.model.define('users', {
     _id: {
       type: INTEGER,
@@ -17,15 +17,15 @@ module.exports = app => {
       type: STRING(32),
       defaultValue: '',
     },
-    created_at: {
-      type: DATE,
-      defaultValue: NOW,
+    sysFlag: {
+      type: INTEGER,
+      defaultValue: 1,
     },
-    updated_at: {
-      type: DATE,
-      defaultValue: NOW,
-    },
+  }, {
+    timestamps: true,
+    paranoid: true,
+    underscored: false,
+    tableName: 'users',
   });
-
   return Users;
 };
