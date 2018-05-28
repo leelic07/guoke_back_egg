@@ -17,10 +17,6 @@ module.exports = app => {
       type: STRING(32),
       defaultValue: '',
     },
-    sysFlag: {
-      type: INTEGER,
-      defaultValue: 1,
-    },
   }, {
     timestamps: true,
     paranoid: true,

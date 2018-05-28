@@ -1,19 +1,37 @@
 'use strict';
 
 module.exports = app => {
-  // const mongoose = app.mongoose;
-  // const Schema = mongoose.Schema;
-  // const SolutionDetailSchema = new Schema({
-  //   name: { type: String, default: '' }, // 软件名称
-  //   introduction: { type: String, default: '' }, // 软件介绍
-  //   constitute: { type: String, default: '' }, // 组成部分和应用领域
-  //   technology: [{ type: String, default: '' }], // 技术特点
-  //   solutionId: { type: Schema.Types.ObjectId, ref: 'Solution' }, // 对应的解决方案id
-  //   createdAt: { type: Date, default: Date.now },
-  //   updatedAt: { type: Date, default: Date.now },
-  //   sysFlag: { type: Number, default: 1 },
-  // }, {
-  //   versionKey: false,
-  // });
-  // return mongoose.model('SolutionDetail', SolutionDetailSchema);
+  const { INTEGER, STRING } = app.Sequelize;
+  const SolutionDetail = app.model.define('solutionDetail', {
+    _id: {
+      type: INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    name: {
+      type: STRING(32),
+      defaultValue: '',
+    },
+    introduction: {
+      type: STRING(255),
+      defaultValue: '',
+    },
+    constitute: {
+      type: STRING(255),
+      defaultValue: '',
+    },
+    technology: {
+      type: STRING(255),
+      defaultValue: '',
+    },
+  }, {
+    timestamps: true,
+    paranoid: true,
+    underscored: false,
+    tableName: 'solutionDetails',
+  });
+  SolutionDetail.associate = () => {
+    SolutionDetail.belongsTo(app.model.Solution, { foreignKey: 'solutionId', onDelete: 'CASCADE', constraints: false });
+  };
+  return SolutionDetail;
 };

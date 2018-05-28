@@ -2,30 +2,44 @@
 const Service = require('egg').Service;
 
 class UsersService extends Service {
-  async index() {
+  async index(pagination) {
     const { ctx } = this;
-    const users = await ctx.model.Users.find({});
+    const page = parseInt(pagination.page) || 1;
+    const rows = parseInt(pagination.rows) || 10;
+    const skip = (page - 1) * rows;
+    const condition = {};
+    pagination.userName && Object.assign(condition, { userName: pagination.userName });
+    const users = await ctx.model.Users.findAndCount({
+      where: condition,
+      limit: rows,
+      offset: skip,
+    });
     return users;
   }
 
-  async show(id) {
+  async show(_id) {
     const { ctx } = this;
-    const user = await ctx.model.Users.findOne(id);
+    const user = await ctx.model.Users.findById(_id);
     return user;
   }
 
   async login(user) {
     const { ctx } = this;
-    const result = await ctx.model.Users.findOne(user, { password: 0 });
+    const result = await ctx.model.Users.findOne({
+      where: user,
+    });
     return result;
   }
 
   async resetPwd(password) {
     const { ctx } = this;
     const _id = ctx.session.userId;
-    password.newPassword = ctx.helper.md5(password.newPassword);
-    password.oldPassword = ctx.helper.md5(password.oldPassword);
-    const result = await ctx.model.Users.findOneAndUpdate({ _id, password: password.oldPassword }, { password: password.newPassword, updatedAt: Date.now() }, { password: 0 });
+    const newPassword = ctx.helper.md5(password.newPassword);
+    const oldPassword = ctx.helper.md5(password.oldPassword);
+    const result = await ctx.model.Users.update({ password: newPassword }, {
+      where: { password: oldPassword, _id },
+      limit: 1,
+    });
     return result;
   }
 

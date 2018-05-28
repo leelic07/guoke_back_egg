@@ -11,7 +11,7 @@ module.exports = () => {
       await next();
     } else {
       if (userId) {
-        const result = await ctx.model.Users.findOne({ _id: userId });
+        const result = await ctx.model.Users.findById(userId);
         if (result) {
           await next();
         } else {

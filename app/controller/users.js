@@ -1,5 +1,10 @@
 'use strict';
 const Controller = require('egg').Controller;
+const indexRule = {
+  page: { type: 'string', allowEmpty: true },
+  rows: { type: 'string', allowEmpty: true },
+  userName: { type: 'string', allowEmpty: true },
+};
 const createRule = {
   userName: 'string',
   password: 'password',
@@ -12,14 +17,17 @@ const updateRule = {
 class UsersController extends Controller {
   async index() {
     const { ctx, service } = this;
-    const users = await service.users.index();
-    ctx.success(users, '查询用户成功');
+    ctx.validate(indexRule, ctx.query);
+    const users = await service.users.index(ctx.query);
+    if (users) ctx.success(users, '查询用户成功');
+    else ctx.fail('查询用户失败');
   }
 
   async show() {
     const { ctx, service } = this;
-    const user = await service.users.show(ctx.query);
-    ctx.success(user, '查询用户成功');
+    const user = await service.users.show(ctx.params.id);
+    if (user) ctx.success(user, '查询用户成功');
+    else ctx.fail('查询用户失败');
   }
 
   /**
@@ -106,6 +114,7 @@ class UsersController extends Controller {
     const result = await service.users.login(user);
     if (result) {
       ctx.session.userId = result._id;
+      delete result.dataValues.password;
       ctx.success(result, '登录成功');
     } else {
       ctx.fail('用户名或密码不正确');

@@ -60,7 +60,7 @@ class BannerController extends Controller {
   async index() {
     const { ctx, service } = this;
     const query = ctx.query;
-    ctx.validate(indexRule, ctx.query);
+    ctx.validate(indexRule, query);
     const result = await service.banner.index(query);
     if (result) ctx.success(result, '查询标题栏成功'); else ctx.fail('查询标题栏失败');
   }
