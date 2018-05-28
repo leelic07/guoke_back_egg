@@ -17,15 +17,18 @@ module.exports = app => {
       type: STRING(32),
       defaultValue: '',
     },
-    created_at: {
+    createdAt: {
       type: DATE,
       defaultValue: NOW,
     },
-    updated_at: {
+    updatedAt: {
       type: DATE,
       defaultValue: NOW,
+    },
+    sysFlag: {
+      type: INTEGER,
+      defaultValue: 1,
     },
   });
-
   return Users;
 };

@@ -31,3 +31,8 @@ exports.nunjucks = {
   enable: true,
   package: 'egg-view-nunjucks',
 };
+
+exports.swagger = {
+  enable: true,
+  package: 'egg-swagger',
+};

@@ -76,5 +76,12 @@ module.exports = appInfo => {
     },
   };
 
+  config.swagger = {
+    enable: true,
+    mountPath: '/test-mount', // swagger-ui  address  <domain>/test-mount
+    swaggerFilePath: '/test-swagger.json', // swagger file default path
+    enableGoogleFont: false,
+  };
+
   return config;
 };
