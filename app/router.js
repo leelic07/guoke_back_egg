@@ -5,11 +5,6 @@
  */
 module.exports = app => {
   const { router, controller } = app;
-  if (app.config.env === 'local') {
-    app.beforeStart(async () => {
-      await app.model.sync({ force: true });
-    });
-  }
   const upload = app.middleware.multer();// 上传文件中间件
   router.get('/', controller.home.index);
   // 登录
