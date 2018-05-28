@@ -25,7 +25,7 @@ module.exports = appInfo => {
     host: 'localhost',
     port: '3306',
     username: 'root',
-    password: '',
+    password: 'root',
   };
 
   // session
@@ -70,7 +70,7 @@ module.exports = appInfo => {
 
   config.cluster = {
     listen: {
-      port: 7001,
+      port: 7002,
       hostname: '127.0.0.1',
       // path: '/var/run/egg.sock',
     },
