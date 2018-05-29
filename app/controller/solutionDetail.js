@@ -10,7 +10,7 @@ const createRule = {
   solutionId: 'string',
   introduction: 'string',
   constitute: { type: 'string', required: false, allowEmpty: true },
-  technology: { type: 'array', required: false, min: 0, itemType: 'string' },
+  technology: { type: 'string', allowEmpty: true },
 };
 
 class SolutionDetailController extends Controller {
@@ -64,7 +64,8 @@ class SolutionDetailController extends Controller {
     const { ctx, service } = this;
     ctx.validate(indexRule, ctx.query);
     const solutionDetail = await service.solutionDetail.index(ctx.query);
-    if (solutionDetail) ctx.success(solutionDetail, '查询解决方案详情成功'); else ctx.fail('查询解决方案详情失败');
+    if (solutionDetail) ctx.success(solutionDetail, '查询解决方案详情成功');
+    else ctx.fail('查询解决方案详情失败');
   }
 
   /**
@@ -117,10 +118,10 @@ class SolutionDetailController extends Controller {
   async create() {
     const { ctx, service } = this;
     const body = ctx.request.body;
-    body.technology = body.technology ? body.technology.split(',') : [];
     ctx.validate(createRule);
     const solutionDetail = await service.solutionDetail.create(body);
-    if (solutionDetail) ctx.success(solutionDetail, '新增解决方案详情成功'); else ctx.fail('新增解决方案详情失败');
+    if (solutionDetail) ctx.success(solutionDetail, '新增解决方案详情成功');
+    else ctx.fail('新增解决方案详情失败');
   }
 
   /**
@@ -240,7 +241,10 @@ class SolutionDetailController extends Controller {
   async edit() {
     const { ctx, service } = this;
     const solutionDetail = await service.solutionDetail.edit(ctx.params.id);
-    if (solutionDetail) ctx.success(solutionDetail, '查询解决方案详情成功'); else ctx.fail('查询解决方案详情失败');
+    if (solutionDetail) {
+      solutionDetail.technology = solutionDetail.technology.split(',');
+      ctx.success(solutionDetail, '查询解决方案详情成功');
+    } else ctx.fail('查询解决方案详情失败');
   }
 
   /**
