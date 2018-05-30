@@ -7,13 +7,11 @@ class InformationService extends Service {
     const page = parseInt(pagination.page) || 1;
     const rows = parseInt(pagination.rows) || 10;
     const skip = (page - 1) * rows;
-    const condition = { sysFlag: 1 };
-    const information = await ctx.model.Information.find(condition).skip(skip).limit(rows);
-    const total = await ctx.model.Information.count(condition);
-    return {
-      information,
-      total,
-    };
+    const information = await ctx.model.Information.findAndCount({
+      limit: rows,
+      offset: skip,
+    });
+    return information;
   }
 
   async create(information) {
@@ -24,26 +22,31 @@ class InformationService extends Service {
 
   async update(_id, information) {
     const { ctx } = this;
-    const result = await ctx.model.Information.update({ _id }, Object.assign(information, { updatedAt: Date.now() }));
+    const result = await ctx.model.Information.update(information, {
+      where: { _id },
+      limit: 1,
+    });
     return result;
   }
 
   async destroy(_id) {
     const { ctx } = this;
-    const result = await ctx.model.Information.update({ _id }, { sysFlag: 0, updatedAt: Date.now() });
+    const result = await ctx.model.Information.destroy({
+      where: { _id },
+      limit: 1,
+    });
     return result;
   }
 
   async edit(_id) {
     const { ctx } = this;
-    console.log('id', _id);
-    const information = await ctx.model.Information.findOne(Object.assign({ _id }, { sysFlag: 1 }));
+    const information = await ctx.model.Information.findById(_id);
     return information;
   }
 
   async list() {
     const { ctx } = this;
-    const information = await ctx.model.Information.find({ sysFlag: 1 });
+    const information = await ctx.model.Information.findAll();
     return information;
   }
 }

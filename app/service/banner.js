@@ -8,7 +8,7 @@ class BannerService extends Service {
     const rows = parseInt(pagination.rows) || 10;
     const skip = (page - 1) * rows;
     const condition = {};
-    pagination.title && Object.assign(condition, { title: pagination.title });
+    pagination.title && (condition.title = { $like: `%${pagination.title}%` });
     const banners = ctx.model.Banner.findAndCount({
       where: condition,
       limit: rows,

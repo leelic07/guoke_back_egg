@@ -69,7 +69,10 @@ class IntroductionController extends Controller {
     const query = ctx.query;
     ctx.validate(indexRule, query);
     const result = await service.introduction.index(query);
-    if (result) ctx.success(result, '查询简介成功'); else ctx.fail('查询简介失败');
+    if (result) {
+      result.images = result.images.split(',');
+      ctx.success(result, '查询简介成功');
+    } else ctx.fail('查询简介失败');
   }
 
   /**
@@ -252,7 +255,10 @@ class IntroductionController extends Controller {
   async edit() {
     const { ctx, service } = this;
     const introduction = await service.introduction.edit(ctx.params.id);
-    if (introduction) ctx.success(introduction, '查询简介成功'); else ctx.fail('查询简介失败');
+    if (introduction) {
+      introduction.images = introduction.images.split(',');
+      ctx.success(introduction, '查询简介成功');
+    } else ctx.fail('查询简介失败');
   }
 
   /**
@@ -303,7 +309,10 @@ class IntroductionController extends Controller {
   async list() {
     const { ctx, service } = this;
     const introduction = await service.introduction.list();
-    if (introduction) ctx.success(introduction, '查询简介成功'); else ctx.fail('查询简介失败');
+    if (introduction) {
+      introduction.images = introduction.images.split(',');
+      ctx.success(introduction, '查询简介成功');
+    } else ctx.fail('查询简介失败');
   }
 }
 

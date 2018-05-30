@@ -8,8 +8,8 @@ class SolutionService extends Service {
     const rows = parseInt(pagination.rows) || 10;
     const skip = (page - 1) * rows;
     const condition = {};
-    pagination.title && (condition.title = pagination.title);
-    const solutions = ctx.model.Solution.findAndCount({
+    pagination.title && (condition.title = { $like: `%${pagination.title}%` });
+    const solutions = await ctx.model.Solution.findAndCount({
       where: condition,
       limit: rows,
       offset: skip,

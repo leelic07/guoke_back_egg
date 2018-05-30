@@ -3,7 +3,8 @@ const Controller = require('egg').Controller;
 const indexRule = {
   page: { type: 'string', allowEmpty: true },
   rows: { type: 'string', allowEmpty: true },
-  introduction: { type: 'string', required: false, allowEmpty: true },
+  // introduction: { type: 'string', required: false, allowEmpty: true },
+  name: { type: 'string', allowEmpty: true },
 };
 const createRule = {
   name: 'string',
