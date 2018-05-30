@@ -7,15 +7,14 @@ class SolutionService extends Service {
     const page = parseInt(pagination.page) || 1;
     const rows = parseInt(pagination.rows) || 10;
     const skip = (page - 1) * rows;
-    const condition = { sysFlag: 1 };
+    const condition = {};
     pagination.title && (condition.title = pagination.title);
-    const solution = await ctx.model.Solution.find(condition).populate('solutionDetailId').skip(skip)
-      .limit(rows);
-    const total = await ctx.model.Solution.count(condition);
-    return {
-      solution,
-      total,
-    };
+    const solutions = ctx.model.Solution.findAndCount({
+      where: condition,
+      limit: rows,
+      offset: skip,
+    });
+    return solutions;
   }
 
   async create(solution) {
@@ -26,30 +25,32 @@ class SolutionService extends Service {
 
   async update(_id, solution) {
     const { ctx } = this;
-    const result = await ctx.model.Solution.update({ _id }, Object.assign(solution, { updatedAt: Date.now() }));
+    const result = await ctx.model.Solution.update(solution, {
+      where: { _id },
+    });
     return result;
   }
 
   async destroy(_id) {
     const { ctx } = this;
-    const result = await ctx.model.Solution.update({ _id }, { sysFlag: 0, updatedAt: Date.now() });
-    if (result) {
-      const solutionDetailResult = await ctx.model.SolutionDetail.findOneAndUpdate({ solutionId: _id }, { solutionId: null });
-      if (solutionDetailResult) return result;
-    } return '';
+    const result = await ctx.model.Solution.destroy({
+      where: { _id },
+    });
+    return result;
   }
 
   async list() {
     const { ctx } = this;
-    const solution = await ctx.model.Solution.find({ sysFlag: 1 }).populate('solutionDetailId');
-    return solution;
+    const solutions = await ctx.model.Solution.findAll();
+    return solutions;
   }
 
-  async edit(id) {
+  async edit(_id) {
     const { ctx } = this;
-    const condition = { sysFlag: 1 };
-    condition._id = id;
-    const solution = await ctx.model.Solution.findOne(condition);
+    const solution = await ctx.model.Solution.findOne({
+      where: { _id },
+      include: [ ctx.model.SolutionDetail ],
+    });
     return solution;
   }
 }
